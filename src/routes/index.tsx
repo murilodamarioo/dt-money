@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react'
 
 import { PublicRoutes } from './PublickRoutes'
 import { PrivateRoutes } from './PrivateRoutes'
+import { StatusBar } from 'expo-status-bar'
 
 const NavigationRoutes = () => {
   const [user, setUser] = useState(undefined)
@@ -14,6 +15,7 @@ const NavigationRoutes = () => {
 
   return (
     <NavigationContainer>
+      <StatusBar style={'light'} />
       <Routes />
     </NavigationContainer>
   )
