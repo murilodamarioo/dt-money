@@ -1,18 +1,16 @@
-import { Text, TouchableOpacity, View } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
+import { View } from 'react-native'
 
-import { PublicStackParamsList } from '@/routes/PublickRoutes'
+import { AuthHeader } from '@/components/AuthHeader'
+import { DismissKeyboardView } from '@/components/DismissKeyboardView'
+import { RegisterForm } from './RegisterForm'
 
 export const Register = () => {
-  const navigation = useNavigation<StackNavigationProp<PublicStackParamsList>>()
-
   return (
-    <View className='flex-1 items-center justify-center'>
-      <Text>Tela de registro</Text>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Text>Voltar</Text>
-      </TouchableOpacity>
-    </View>
+    <DismissKeyboardView>
+      <View className='flex-1 w-[82%] self-center'>
+        <AuthHeader />
+        <RegisterForm />
+      </View>
+    </DismissKeyboardView>
   )
 }
