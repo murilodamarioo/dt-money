@@ -5,7 +5,7 @@ export const useKeyboardVisible = () => {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false)
 
   useEffect(() => {
-    const keyboardShowListener = Keyboard.addListener('keyboardDidShow', () => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
       setIsKeyboardVisible(true)
     })
 
@@ -15,7 +15,7 @@ export const useKeyboardVisible = () => {
 
     return () => {
       keyboardDidHideListener.remove()
-      keyboardShowListener.remove()
+      keyboardDidShowListener.remove()
     }
   }, [])
 
