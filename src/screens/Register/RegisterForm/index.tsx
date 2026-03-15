@@ -1,17 +1,22 @@
 import { Fragment } from 'react'
 import { useForm } from 'react-hook-form'
 import { Text, View } from 'react-native'
+import { NavigationProp, useNavigation } from '@react-navigation/native'
+
+import { yupResolver } from '@hookform/resolvers/yup'
+
+import { schema } from './schema'
 
 import { AppButton } from '@/components/AppButton'
 import { AppInput } from '@/components/AppInput'
-import { NavigationProp, useNavigation } from '@react-navigation/native'
+
 import { PublicStackParamsList } from '@/routes/PublickRoutes'
 
 export interface FormRegisterParams {
   name: string
   email: string
   password: string
-  confirmPassord: string
+  confirmPassword: string
 }
 
 export const RegisterForm = () => {
@@ -19,9 +24,19 @@ export const RegisterForm = () => {
     control,
     handleSubmit,
     formState: { isSubmitting }
-  } = useForm<FormRegisterParams>()
+  } = useForm<FormRegisterParams>({
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    },
+    resolver: yupResolver(schema)
+  })
 
   const navigation = useNavigation<NavigationProp<PublicStackParamsList>>()
+
+  const onSubmit = () => { }
 
   return (
     <Fragment>
@@ -52,7 +67,7 @@ export const RegisterForm = () => {
 
       <AppInput
         control={control}
-        name='confirmPassord'
+        name='confirmPassword'
         label='SENHA'
         leftIconName='lock'
         placeholder='Confirme sua senha'
@@ -60,7 +75,7 @@ export const RegisterForm = () => {
       />
 
       <View className='flex-1 justify-between mt-8 mb-6 min-h-[250px]'>
-        <AppButton iconName='arrow-forward'>
+        <AppButton onPress={handleSubmit(onSubmit)} iconName='arrow-forward'>
           Cadastrar
         </AppButton>
 

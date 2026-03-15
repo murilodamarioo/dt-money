@@ -1,10 +1,15 @@
 import { Fragment } from 'react'
 import { Text, View } from 'react-native'
 import { useForm } from 'react-hook-form'
+import { NavigationProp, useNavigation } from '@react-navigation/native'
+
+import { yupResolver } from '@hookform/resolvers/yup'
+
+import { schema } from './schema'
 
 import { AppInput } from '@/components/AppInput'
 import { AppButton } from '@/components/AppButton'
-import { NavigationProp, useNavigation } from '@react-navigation/native'
+
 import { PublicStackParamsList } from '@/routes/PublickRoutes'
 
 export interface FormLoginParams {
@@ -17,9 +22,17 @@ export const LoginForm = () => {
     control,
     handleSubmit,
     formState: { isSubmitting }
-  } = useForm<FormLoginParams>()
+  } = useForm<FormLoginParams>({
+    defaultValues: {
+      email: '',
+      password: ''
+    },
+    resolver: yupResolver(schema)
+  })
 
   const navigation = useNavigation<NavigationProp<PublicStackParamsList>>()
+
+  const onSubmit = async () => { }
 
   return (
     <Fragment>
@@ -41,7 +54,7 @@ export const LoginForm = () => {
       />
 
       <View className='flex-1 justify-between mt-8 mb-6 min-h-[250px]'>
-        <AppButton iconName='arrow-forward'>
+        <AppButton onPress={handleSubmit(onSubmit)} iconName='arrow-forward'>
           Login
         </AppButton>
 
