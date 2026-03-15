@@ -4,15 +4,14 @@ import { StackNavigationProp } from '@react-navigation/stack'
 
 import { PublicStackParamsList } from '@/routes/PublickRoutes'
 
-
-export const Login = () => {
+export const Register = () => {
   const navigation = useNavigation<StackNavigationProp<PublicStackParamsList>>()
 
   return (
     <View className='flex-1 items-center justify-center'>
-      <Text>Tela de Login</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-        <Text>Registrar</Text>
+      <Text>Tela de registro</Text>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Text>Voltar</Text>
       </TouchableOpacity>
     </View>
   )
