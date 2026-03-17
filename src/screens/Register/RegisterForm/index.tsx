@@ -11,6 +11,8 @@ import { AppButton } from '@/components/AppButton'
 import { AppInput } from '@/components/AppInput'
 
 import { PublicStackParamsList } from '@/routes/PublickRoutes'
+import { useAuthContext } from '@/context/auth.context'
+import { AxiosError } from 'axios'
 
 export interface FormRegisterParams {
   name: string
@@ -34,9 +36,19 @@ export const RegisterForm = () => {
     resolver: yupResolver(schema)
   })
 
+  const { handleRegister } = useAuthContext()
+
   const navigation = useNavigation<NavigationProp<PublicStackParamsList>>()
 
-  const onSubmit = () => { }
+  const onSubmit = async (userData: FormRegisterParams) => {
+    try {
+      await handleRegister(userData)
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data)
+      }
+    }
+  }
 
   return (
     <Fragment>
