@@ -1,10 +1,13 @@
 import { createContext, FC, PropsWithChildren, useContext, useState } from 'react'
 
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 import { FormLoginParams } from '@/screens/Login/LoginForm'
 import { FormRegisterParams } from '@/screens/Register/RegisterForm'
 
 import * as authService from '@/shared/services/dt-money/auth.service'
 import { IUser } from '@/shared/interfaces/user-interface'
+import { IAuthenticateResponse } from '@/shared/interfaces/https/authenticate-response'
 
 type AuthContextType = {
   user: IUser | null
@@ -12,6 +15,7 @@ type AuthContextType = {
   handleAuthenticate: (params: FormLoginParams) => Promise<void>
   handleRegister: (params: FormRegisterParams) => Promise<void>
   handleLogout: () => void
+  restoreUserSession: () => Promise<string | null>
 }
 
 export const AuthContext = createContext<AuthContextType>(
@@ -25,12 +29,16 @@ export const AuthContextProvivider: FC<PropsWithChildren> = ({ children }) => {
   const handleAuthenticate = async (userData: FormLoginParams) => {
     const { user, token } = await authService.authenticate(userData)
 
+    await AsyncStorage.setItem('dt-money-user', JSON.stringify({ user, token }))
+
     setUser(user)
     setToken(token)
   }
 
   const handleRegister = async (formData: FormRegisterParams) => {
     const { user, token } = await authService.registerUser(formData)
+
+    await AsyncStorage.setItem('dt-money-user', JSON.stringify({ user, token }))
 
     setUser(user)
     setToken(token)
@@ -40,6 +48,18 @@ export const AuthContextProvivider: FC<PropsWithChildren> = ({ children }) => {
 
   }
 
+  const restoreUserSession = async () => {
+    const userData = await AsyncStorage.getItem('get-money-user')
+
+    if (userData) {
+      const { user, token } = JSON.parse(userData) as IAuthenticateResponse
+      setUser(user)
+      setToken(token)
+    }
+
+    return userData
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -47,7 +67,8 @@ export const AuthContextProvivider: FC<PropsWithChildren> = ({ children }) => {
         token,
         handleAuthenticate,
         handleRegister,
-        handleLogout
+        handleLogout,
+        restoreUserSession
       }}
     >
       {children}
