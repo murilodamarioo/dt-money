@@ -1,9 +1,10 @@
-import { useAuthContext } from '@/context/auth.context'
-import { colors } from '@/shared/colors'
-import { FC, Fragment, useEffect } from 'react'
 import { ActivityIndicator, Image } from 'react-native'
-
+import { FC, Fragment, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
+
+import { useAuthContext } from '@/context/auth.context'
+
+import { colors } from '@/shared/colors'
 
 interface Props {
   setLoading: (value: boolean) => void

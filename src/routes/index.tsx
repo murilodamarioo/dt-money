@@ -4,11 +4,12 @@ import { useCallback, useState } from 'react'
 
 import { StatusBar } from 'expo-status-bar'
 
+import { Loading } from '@/screens/Loading'
+
 import { PublicRoutes } from './PublickRoutes'
 import { PrivateRoutes } from './PrivateRoutes'
 
 import { useAuthContext } from '@/context/auth.context'
-import { Loading } from '@/screens/Loading'
 
 const NavigationRoutes = () => {
   const [loading, setLoading] = useState(true)
@@ -19,7 +20,7 @@ const NavigationRoutes = () => {
       return <Loading setLoading={setLoading} />
     }
 
-    return !user || !token ? <PublicRoutes /> : <PrivateRoutes />
+    return (!user || !token) ? <PublicRoutes /> : <PrivateRoutes />
   }, [user, token, loading])
 
   return (
