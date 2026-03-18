@@ -13,6 +13,8 @@ import { AppButton } from '@/components/AppButton'
 import { PublicStackParamsList } from '@/routes/PublickRoutes'
 import { useAuthContext } from '@/context/auth.context'
 import { AxiosError } from 'axios'
+import { useSnackBarContext } from '@/context/snackbar.context'
+import { AppError } from '@/shared/helpers/AppError'
 
 export interface FormLoginParams {
   email: string
@@ -33,6 +35,7 @@ export const LoginForm = () => {
   })
 
   const { handleAuthenticate } = useAuthContext()
+  const { notify } = useSnackBarContext()
 
   const navigation = useNavigation<NavigationProp<PublicStackParamsList>>()
 
@@ -40,8 +43,11 @@ export const LoginForm = () => {
     try {
       await handleAuthenticate(userData)
     } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log(error.response?.data)
+      if (error instanceof AppError) {
+        notify({
+          message: error.message,
+          messageType: 'ERROR'
+        })
       }
     }
   }
