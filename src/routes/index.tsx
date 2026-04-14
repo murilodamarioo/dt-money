@@ -1,8 +1,7 @@
 
 import { NavigationContainer } from '@react-navigation/native'
 import { useCallback, useState } from 'react'
-
-import { StatusBar } from 'expo-status-bar'
+import { SystemBars } from 'react-native-edge-to-edge'
 
 import { Loading } from '@/screens/Loading'
 
@@ -25,7 +24,7 @@ const NavigationRoutes = () => {
 
   return (
     <NavigationContainer>
-      <StatusBar style={'light'} />
+      <SystemBars style={'light'} />
       <Routes />
     </NavigationContainer>
   )
