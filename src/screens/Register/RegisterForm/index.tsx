@@ -67,7 +67,7 @@ export const RegisterForm = () => {
         name='email'
         label='E-MAIL'
         leftIconName='email'
-        placeholder='Seu nome completo'
+        placeholder='Seu e-mail'
       />
 
       <AppInput

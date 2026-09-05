@@ -63,7 +63,7 @@ export const AppInput = <T extends FieldValues>({
               </Text>
             )}
 
-            <TouchableOpacity className='flex-row items-center justify-between border-b border-gray-600 px-3 py-2 h-16'>
+            <TouchableOpacity className='flex-row items-center justify-between border-b-[1px] border-gray-600 px-3 py-2 h-16'>
               {leftIconName && (
                 <MaterialIcons
                   name={leftIconName}
