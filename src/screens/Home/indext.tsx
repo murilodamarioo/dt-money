@@ -1,20 +1,21 @@
 import { useEffect } from 'react'
-import { Text } from 'react-native'
+import { FlatList, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-import { AppHeader } from '@/components/AppHeader'
+import { ListHeader } from './ListHeader'
 
 import { useTransactionContext } from '@/context/transaction.context'
 
 import { useErrorHandler } from '@/shared/hooks/useErrorHandler'
 
 export const Home = () => {
-  const { fetchCategories } = useTransactionContext()
+  const { fetchCategories, fetchTransactions } = useTransactionContext()
   const { handleError } = useErrorHandler()
 
   const handleFetchCategories = async () => {
     try {
       await fetchCategories()
+      await fetchTransactions()
     } catch (error) {
       handleError(error, 'Falha aon buscar as categorias')
     }
@@ -27,9 +28,12 @@ export const Home = () => {
   }, [])
 
   return (
-    <SafeAreaView className='flex-1 bg-background-primary'>
-      <AppHeader />
-      <Text>Tela de Home</Text>
+    <SafeAreaView className='flex-1 bg-background-secondary'>
+      <FlatList
+        data={[]}
+        renderItem={() => <></>}
+        ListHeaderComponent={ListHeader}
+      />
     </SafeAreaView>
   )
 }

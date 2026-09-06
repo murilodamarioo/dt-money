@@ -14,7 +14,7 @@ export const AppHeader = () => {
   const { openBottomSheet } = useBottomSheetContext()
 
   return (
-    <View className='flex-row w-full p-8 justify-between'>
+    <View className='flex-row w-full p-8 justify-between bg-background-primary'>
       <View>
         <Image
           source={require('@/assets/Logo.png')}
