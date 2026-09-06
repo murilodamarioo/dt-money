@@ -9,12 +9,13 @@ import { useBottomSheetContext } from '@/context/bottomSheet.context'
 
 import { TransactionTypeSelector } from '../SelectType'
 import { SelectCategoryModal } from '../SelectCategoryModal'
+import { AppButton } from '../AppButton'
 
 import { CreateTransactionRequest } from '@/shared/interfaces/https/create-transaction-request'
 import { colors } from '@/shared/colors'
 
 import { transactionSchema } from './schema'
-import { AppButton } from '../AppButton'
+import { ErrorMessage } from '../ErrorMessage'
 
 
 type ValidationErrorsTypes = Record<keyof CreateTransactionRequest, string>
@@ -68,6 +69,9 @@ export const NewTransaction = () => {
       </TouchableOpacity>
 
       <View className='flex-1 mt-8 mb-8'>
+        {
+          validationErrrors?.description && <ErrorMessage>{validationErrrors.description}</ErrorMessage>
+        }
         <TextInput
           className='text-white text-lg h-[50] bg-background-primary my-2 rounded-[6] pl-4'
           placeholder='Descrição'
@@ -76,6 +80,10 @@ export const NewTransaction = () => {
           onChangeText={(text) => setTransactionData('description', text)}
         />
 
+
+        {
+          validationErrrors?.value && <ErrorMessage>{validationErrrors.value}</ErrorMessage>
+        }
         <CurrencyInput
           className='text-white text-lg h-[50] bg-background-primary my-2 rounded-[6] pl-4'
           value={transaction.value}
@@ -87,15 +95,24 @@ export const NewTransaction = () => {
           onChangeValue={(value) => setTransactionData('value', value ?? 0)}
         />
 
+
+        {
+          validationErrrors?.categoryId && <ErrorMessage>{validationErrrors.categoryId}</ErrorMessage>
+        }
         <SelectCategoryModal
           selectedCategory={transaction.categoryId}
           onSelect={(categoryId) => setTransactionData('categoryId', categoryId)}
         />
 
+
+        {
+          validationErrrors?.typeId && <ErrorMessage>{validationErrrors.typeId}</ErrorMessage>
+        }
         <TransactionTypeSelector
           typeId={transaction.typeId}
           setTransactionType={(type) => setTransactionData('typeId', type)}
         />
+
 
         <View className='my-4'>
           <AppButton onPress={handleCreateTransaction}>
