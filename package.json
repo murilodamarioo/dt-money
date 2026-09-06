@@ -19,6 +19,7 @@
     "axios": "^1.13.6",
     "clsx": "^2.1.1",
     "expo": "~55.0.6",
+    "expo-checkbox": "~55.0.4",
     "expo-status-bar": "~55.0.4",
     "nativewind": "^4.2.3",
     "react": "19.2.0",
