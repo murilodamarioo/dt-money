@@ -1,8 +1,11 @@
 import { Platform } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import axios from 'axios'
 
 import { AppError } from '../helpers/AppError'
+import { addTokenToRequest } from '../helpers/axios.helper'
+import { IAuthenticateResponse } from '../interfaces/https/authenticate-response'
 
 const baseURL = Platform.select({
   ios: 'http://localhost:3001',
@@ -12,6 +15,8 @@ const baseURL = Platform.select({
 export const dtMoneyApi = axios.create({
   baseURL
 })
+
+addTokenToRequest(dtMoneyApi)
 
 dtMoneyApi.interceptors.response.use(
   (config) => config,

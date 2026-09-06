@@ -52,7 +52,7 @@ export const AuthContextProvivider: FC<PropsWithChildren> = ({ children }) => {
   }
 
   const restoreUserSession = async () => {
-    const userData = await AsyncStorage.getItem('get-money-user')
+    const userData = await AsyncStorage.getItem('dt-money-user')
 
     if (userData) {
       const { user, token } = JSON.parse(userData) as IAuthenticateResponse
