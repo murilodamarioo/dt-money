@@ -3,6 +3,8 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 import CurrencyInput from 'react-native-currency-input'
 
+import * as Yup from 'yup'
+
 import { useBottomSheetContext } from '@/context/bottomSheet.context'
 
 import { TransactionTypeSelector } from '../SelectType'
@@ -11,8 +13,16 @@ import { SelectCategoryModal } from '../SelectCategoryModal'
 import { CreateTransactionRequest } from '@/shared/interfaces/https/create-transaction-request'
 import { colors } from '@/shared/colors'
 
+import { transactionSchema } from './schema'
+import { AppButton } from '../AppButton'
+
+
+type ValidationErrorsTypes = Record<keyof CreateTransactionRequest, string>
+
 export const NewTransaction = () => {
   const { closeBottomSheet } = useBottomSheetContext()
+
+  const [validationErrrors, setVaidationErrors] = useState<ValidationErrorsTypes>()
 
   const [transaction, setTransaction] = useState<CreateTransactionRequest>({
     description: '',
@@ -20,6 +30,24 @@ export const NewTransaction = () => {
     typeId: 0,
     value: 0
   })
+
+  const handleCreateTransaction = async () => {
+    try {
+      await transactionSchema.validate(transaction, { abortEarly: false })
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        const errors = {} as ValidationErrorsTypes
+
+        error.inner.forEach((err) => {
+          if (err.path) {
+            errors[err.path as keyof CreateTransactionRequest] = err.message
+          }
+        })
+
+        setVaidationErrors(errors)
+      }
+    }
+  }
 
   const setTransactionData = (key: keyof CreateTransactionRequest, value: string | number) => {
     setTransaction((prevData) => ({ ...prevData, [key]: value }))
@@ -59,7 +87,7 @@ export const NewTransaction = () => {
           onChangeValue={(value) => setTransactionData('value', value ?? 0)}
         />
 
-        <SelectCategoryModal 
+        <SelectCategoryModal
           selectedCategory={transaction.categoryId}
           onSelect={(categoryId) => setTransactionData('categoryId', categoryId)}
         />
@@ -68,6 +96,12 @@ export const NewTransaction = () => {
           typeId={transaction.typeId}
           setTransactionType={(type) => setTransactionData('typeId', type)}
         />
+
+        <View className='my-4'>
+          <AppButton onPress={handleCreateTransaction}>
+            Registrar
+          </AppButton>
+        </View>
       </View>
     </View>
   )
