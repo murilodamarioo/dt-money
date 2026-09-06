@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
-import { Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import CurrencyInput from 'react-native-currency-input'
 
 import * as Yup from 'yup'
@@ -16,12 +16,18 @@ import { colors } from '@/shared/colors'
 
 import { transactionSchema } from './schema'
 import { ErrorMessage } from '../ErrorMessage'
+import { useTransactionContext } from '@/context/transaction.context'
+import { useErrorHandler } from '@/shared/hooks/useErrorHandler'
 
 
 type ValidationErrorsTypes = Record<keyof CreateTransactionRequest, string>
 
 export const NewTransaction = () => {
   const { closeBottomSheet } = useBottomSheetContext()
+  const { createTransaction } = useTransactionContext()
+  const { handleError } = useErrorHandler()
+
+  const [loading, setLoading] = useState(false)
 
   const [validationErrrors, setVaidationErrors] = useState<ValidationErrorsTypes>()
 
@@ -34,7 +40,12 @@ export const NewTransaction = () => {
 
   const handleCreateTransaction = async () => {
     try {
+      setLoading(true)
       await transactionSchema.validate(transaction, { abortEarly: false })
+
+      await createTransaction(transaction)
+
+      closeBottomSheet()
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const errors = {} as ValidationErrorsTypes
@@ -44,9 +55,12 @@ export const NewTransaction = () => {
             errors[err.path as keyof CreateTransactionRequest] = err.message
           }
         })
-
         setVaidationErrors(errors)
+      } else {
+        handleError(error, 'Falha ao criar transação')
       }
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -116,7 +130,7 @@ export const NewTransaction = () => {
 
         <View className='my-4'>
           <AppButton onPress={handleCreateTransaction}>
-            Registrar
+            {loading ? <ActivityIndicator color={colors.white} /> : 'Registrar'}
           </AppButton>
         </View>
       </View>
