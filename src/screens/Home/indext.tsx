@@ -14,8 +14,10 @@ export const Home = () => {
 
   const handleFetchCategories = async () => {
     try {
-      await fetchCategories()
-      await fetchTransactions()
+      await Promise.all([
+        fetchCategories(),
+        fetchTransactions()
+      ])
     } catch (error) {
       handleError(error, 'Falha aon buscar as categorias')
     }
@@ -28,8 +30,9 @@ export const Home = () => {
   }, [])
 
   return (
-    <SafeAreaView className='flex-1 bg-background-secondary'>
+    <SafeAreaView className='flex-1 bg-background-primary'>
       <FlatList
+        className='bg-background-secondary'
         data={[]}
         renderItem={() => <></>}
         ListHeaderComponent={ListHeader}
