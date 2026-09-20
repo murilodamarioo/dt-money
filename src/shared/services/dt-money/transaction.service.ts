@@ -4,6 +4,7 @@ import { dtMoneyApi } from '@/shared/api/dt.money'
 import { CreateTransactionRequest } from '@/shared/interfaces/https/create-transaction-request'
 import { GetTransactionsParams, GetTransactionsResponse } from '@/shared/interfaces/https/get-transaction-request'
 import { TransactionCategory } from '@/shared/interfaces/https/transaction-category-response'
+import { UpdateTransactionRequest } from '@/shared/interfaces/https/update-transaction-request'
 
 export const getTransactionCategories = async (): Promise<TransactionCategory[]> => {
   const { data } = await dtMoneyApi.get<TransactionCategory[]>('/transaction/categories')
@@ -22,6 +23,10 @@ export const getTransactions = async (params: GetTransactionsParams): Promise<Ge
   })
 
   return data
+}
+
+export const updateTransaction = async (transaction: UpdateTransactionRequest) => {
+  await dtMoneyApi.put(`/transaction`, transaction)
 }
 
 export const deleteTransaction = async (id: number) => {
