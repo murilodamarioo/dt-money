@@ -1,11 +1,10 @@
 import { createContext, FC, PropsWithChildren, useCallback, useContext, useState } from 'react'
 
 import { TransactionCategory } from '@/shared/interfaces/https/transaction-category-response'
-
-import * as transactionService from '@/shared/services/dt-money/transaction.service'
 import { CreateTransactionRequest } from '@/shared/interfaces/https/create-transaction-request'
 import { Transaction } from '@/shared/interfaces/transaction'
 import { TotalTransactions } from '@/shared/interfaces/https/total-transactions'
+import * as transactionService from '@/shared/services/dt-money/transaction.service'
 
 export type TransactionContextType = {
   fetchCategories: () => Promise<void>

@@ -9,6 +9,7 @@ import clsx from 'clsx'
 import { Transaction } from '@/shared/interfaces/transaction'
 import { colors } from '@/shared/colors'
 import { TransactionTypes } from '@/shared/enums/transaction-types'
+import { RightAction } from './RightAction'
 
 interface Params {
   transaction: Transaction
@@ -24,26 +25,38 @@ export const TransactionCard: FC<Params> = ({ transaction }) => {
         alignSelf: 'center',
         overflow: 'visible',
         width: '90%',
-        marginBottom: 16
+        marginBottom: 16,
       }}
+      renderRightActions={() => <RightAction />}
+      overshootRight={false}
     >
-      <View className='h-[140] bg-background-tertiary rounded-[6] p-6'>
-        <Text className='text-white text-base'>
-          {transaction.description}
-        </Text>
-        <Text className={clsx('text-2xl font-bold mt-2', isExpense ? 'text-accent-red' : 'text-accent-brand-light')}>
-          {isExpense && '-'}R${' '}
-          {transaction.value.toFixed(2).replace('.', ',')}
+      <View className='h-[140] bg-background-tertiary rounded-md p-6'>
+        <Text className='text-white text-base'>{transaction.description}</Text>
+        <Text
+          className={clsx(
+            'text-xl font-bold mt-2',
+            isExpense ? 'text-accent-red' : 'text-accent-brand-light',
+          )}
+        >
+          {isExpense && '-'}R$ {transaction.value.toFixed(2).replace('.', ',')}
         </Text>
         <View className='flex-row w-full justify-between items-center'>
           <View className='items-center flex-row mt-3'>
-            <MaterialIcons name='label-outline' color={colors.gray[700]} size={23} />
+            <MaterialIcons
+              name='label-outline'
+              color={colors.gray[700]}
+              size={23}
+            />
             <Text className='text-gray-700 text-base ml-2'>
               {transaction.category.name}
             </Text>
           </View>
-          <View className='item-center flex-row mt-3'>
-            <MaterialIcons name='calendar-month' color={colors.gray[700]} size={20} />
+          <View className='items-center flex-row mt-3'>
+            <MaterialIcons
+              name='calendar-month'
+              color={colors.gray[700]}
+              size={20}
+            />
             <Text className='text-gray-700 text-base ml-2'>
               {format(transaction.createdAt, 'dd/MM/yyyy')}
             </Text>
