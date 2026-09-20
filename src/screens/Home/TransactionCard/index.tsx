@@ -6,9 +6,11 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { format } from 'date-fns'
 import clsx from 'clsx'
 
-import { Transaction } from '@/shared/interfaces/transaction'
 import { colors } from '@/shared/colors'
+import { moneyMapper } from '@/shared/utils/money-mapper'
+import { Transaction } from '@/shared/interfaces/transaction'
 import { TransactionTypes } from '@/shared/enums/transaction-types'
+
 import { RightAction } from './RightAction'
 import { LeftAction } from './LeftAction'
 
@@ -41,7 +43,7 @@ export const TransactionCard: FC<Params> = ({ transaction }) => {
             isExpense ? 'text-accent-red' : 'text-accent-brand-light',
           )}
         >
-          {isExpense && '-'}R$ {transaction.value.toFixed(2).replace('.', ',')}
+          {isExpense && '-'}R$ {moneyMapper(transaction.value)}
         </Text>
         <View className='flex-row w-full justify-between items-center'>
           <View className='items-center flex-row mt-3'>
