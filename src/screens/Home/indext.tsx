@@ -15,40 +15,53 @@ export const Home = () => {
     fetchCategories,
     fetchTransactions,
     loadMoreTransactions,
+    handleloadings,
     transactions,
-    loading
+    loadings
   } = useTransactionContext()
   const { handleError } = useErrorHandler()
 
   const handleFetchCategories = async () => {
     try {
+      handleloadings({ key: 'initial', value: true })
       await fetchCategories()
     } catch (error) {
       handleError(error, 'Falha ao buscar as categorias')
+    } finally {
+      handleloadings({ key: 'initial', value: false })
     }
   }
 
   const handleFetchInitialTransactions = async () => {
     try {
+      handleloadings({ key: 'initial', value: true })
       await fetchTransactions({ page: 1 })
     } catch (error) {
       handleError(error, 'Falha ao buscar transações')
+    } finally {
+      handleloadings({ key: 'initial', value: false })
     }
   }
 
   const handleLoadMoreTransactions = async () => {
     try {
+      handleloadings({ key: 'loadMore', value: true })
       await loadMoreTransactions()
     } catch (error) {
       handleError(error, 'Falha ao carregar novas transações')
+    } finally {
+      handleloadings({ key: 'loadMore', value: false })
     }
   }
 
   const handleRefreshTransactions = async () => {
     try {
+      handleloadings({ key: 'refresh', value: true })
       await refreshTransactions()
     } catch (error) {
       handleError(error, 'Falha ao recarregar as transações')
+    } finally {
+      handleloadings({ key: 'refresh', value: false })
     }
   }
 
@@ -71,7 +84,7 @@ export const Home = () => {
         ListHeaderComponent={ListHeader}
         refreshControl={
           <RefreshControl
-            refreshing={loading}
+            refreshing={loadings.refresh}
             onRefresh={handleRefreshTransactions}
           />
         }
