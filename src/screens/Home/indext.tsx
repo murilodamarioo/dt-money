@@ -22,19 +22,41 @@ export const Home = () => {
 
   const handleFetchCategories = async () => {
     try {
-      await Promise.all([
-        fetchCategories(),
-        fetchTransactions({ page: 1 })
-      ])
+      await fetchCategories()
     } catch (error) {
-      handleError(error, 'Falha aon buscar as categorias')
+      handleError(error, 'Falha ao buscar as categorias')
+    }
+  }
+
+  const handleFetchInitialTransactions = async () => {
+    try {
+      await fetchTransactions({ page: 1 })
+    } catch (error) {
+      handleError(error, 'Falha ao buscar transações')
+    }
+  }
+
+  const handleLoadMoreTransactions = async () => {
+    try {
+      await loadMoreTransactions()
+    } catch (error) {
+      handleError(error, 'Falha ao carregar novas transações')
+    }
+  }
+
+  const handleRefreshTransactions = async () => {
+    try {
+      await refreshTransactions()
+    } catch (error) {
+      handleError(error, 'Falha ao recarregar as transações')
     }
   }
 
   useEffect(() => {
-    (async () => {
-      await handleFetchCategories()
-    })()
+    void Promise.all([
+      handleFetchCategories(),
+      handleFetchInitialTransactions()
+    ])
   }, [])
 
   return (
@@ -43,14 +65,14 @@ export const Home = () => {
         className='bg-background-secondary'
         data={transactions}
         keyExtractor={({ id }) => `transaction-${id}`}
-        onEndReached={loadMoreTransactions}
+        onEndReached={handleLoadMoreTransactions}
         onEndReachedThreshold={0.5}
         renderItem={({ item }) => <TransactionCard transaction={item} />}
         ListHeaderComponent={ListHeader}
         refreshControl={
           <RefreshControl
             refreshing={loading}
-            onRefresh={refreshTransactions}
+            onRefresh={handleRefreshTransactions}
           />
         }
       />
