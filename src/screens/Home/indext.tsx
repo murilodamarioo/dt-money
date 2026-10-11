@@ -23,7 +23,7 @@ export const Home = () => {
     try {
       await Promise.all([
         fetchCategories(),
-        fetchTransactions()
+        fetchTransactions({ page: 1 })
       ])
     } catch (error) {
       handleError(error, 'Falha aon buscar as categorias')
