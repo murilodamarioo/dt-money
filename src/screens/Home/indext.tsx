@@ -14,6 +14,7 @@ export const Home = () => {
     refreshTransactions,
     fetchCategories,
     fetchTransactions,
+    loadMoreTransactions,
     transactions,
     loading
   } = useTransactionContext()
@@ -42,6 +43,8 @@ export const Home = () => {
         className='bg-background-secondary'
         data={transactions}
         keyExtractor={({ id }) => `transaction-${id}`}
+        onEndReached={loadMoreTransactions}
+        onEndReachedThreshold={0.5}
         renderItem={({ item }) => <TransactionCard transaction={item} />}
         ListHeaderComponent={ListHeader}
         refreshControl={
