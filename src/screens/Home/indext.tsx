@@ -3,11 +3,12 @@ import { FlatList, RefreshControl } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { ListHeader } from './ListHeader'
+import { TransactionCard } from './TransactionCard'
+import { EmptyList } from './EmptyList'
 
 import { useTransactionContext } from '@/context/transaction.context'
 
 import { useErrorHandler } from '@/shared/hooks/useErrorHandler'
-import { TransactionCard } from './TransactionCard'
 
 export const Home = () => {
   const {
@@ -82,6 +83,7 @@ export const Home = () => {
         onEndReachedThreshold={0.5}
         renderItem={({ item }) => <TransactionCard transaction={item} />}
         ListHeaderComponent={ListHeader}
+        ListEmptyComponent={loadings.initial ? null : EmptyList}
         refreshControl={
           <RefreshControl
             refreshing={loadings.refresh}
